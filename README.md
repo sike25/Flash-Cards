@@ -5,7 +5,7 @@
 An application that supports the creation and display of custom question-flip-answer flashcards.
 The app allows the user to create several flashcards by prompting them for custom questions ad answers. User is able to browse the stack of flashcards, clicking to prompt the app to display the answers for each. Upon exiting the app, the user's custom flashcards are not lost but can still be seen on reopening the app.
 
-### App Walk-though
+### App Walk-though 
 ![Alt Text](https://media.giphy.com/media/CCU5j6cipAM1l9OgNQ/giphy.gif)
 
 ## Required
