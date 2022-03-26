@@ -55,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
             flashcardQuestion.setVisibility(View.INVISIBLE);
             flashcardAnswer.setVisibility(View.VISIBLE);
         });
+        
+          //toggles back to the flashcard question
+        flashcardAnswer.setOnClickListener(v -> {
+            flashcardQuestion.setVisibility(View.VISIBLE);
+            flashcardAnswer.setVisibility(View.INVISIBLE);
+        });
 
         //set incorrect option to grey background
         firstChoice.setOnClickListener(v ->
