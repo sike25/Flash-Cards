@@ -6,7 +6,7 @@ An application that supports the creation and display of custom question-flip-an
 The app allows the user to create several flashcards by prompting them for custom questions ad answers. User is able to browse the stack of flashcards, clicking to prompt the app to display the answers for each. Upon exiting the app, the user's custom flashcards are not lost but can still be seen on reopening the app.
 
 ### App Walk-though
-![Alt Text]()
+![Alt Text](https://media.giphy.com/media/CCU5j6cipAM1l9OgNQ/giphy.gif)
 
 ## Required
 - [X] User can create a card and still see their created card when the app is relaunched.
@@ -26,7 +26,7 @@ Displays a flashcard with a question, that when clicked displays the answer. The
 The plus sign at the bottom of the screen takes the user to a new screen where they can input their own custom question and answer. When the save button is pressed, they are returned to the original screen but now, the flashcard displays their custom question, and when clicked, displays the custom answer they have supplied. When the cancel button is clicked, the user is returned to the old screen.
 
 ### App Walk-though
-![Alt Text](https://media.giphy.com/media/JXpdP69anVoMaG1C20/giphy.gif)
+![Alt Text](https://media.giphy.com/media/1hZbDiHHmmMBm2azoH/giphy.gif)
 
 ## Required
 - [X] User can click on a ‘+’ button that takes the user to new ‘Add Card Screen’
