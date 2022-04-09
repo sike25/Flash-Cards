@@ -1,4 +1,24 @@
 # FlashCards
+## Lab 4
+
+### App Description
+An application that supports the creation and display of custom question-flip-answer flashcards.
+The app allows the user to create several flashcards by prompting them for custom questions and answers. User is able to browse the stack of flashcards, clicking to prompt the app to display the answers for each. Upon exiting the app, the user's custom flashcards are not lost but can still be seen on reopening the app. Transitions between flashcard questions and answers, between flashcards and between activities are animated.
+
+### App Walk-though
+![Alt Text](https://media.giphy.com/media/qUmdaG2269qYJfocls/giphy.gif)
+
+## Required
+- [X] User sees a transition animation when going from the main screen to the add card screen.
+- [X] User sees a reveal animation when the flashcard is tapped and the answer is shown
+- [X] User sees flashcards animating in / out when the 'next' button is tapped
+
+## Optional
+- [ ] Extra styling is added!
+- [ ] User sees a countdown timer for each question
+- [ ] User sees a 'card flip' animation when the card is tapped
+- [ ] User sees a celebration animation with confetti when they answer a question correctly
+
 ## Lab 3
 
 ### App Description
