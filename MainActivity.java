@@ -1,12 +1,17 @@
-package com.example.myapplication;
+package com.example.flashcards;
 
+import android.animation.Animator;
 import android.content.Intent;
 import android.os.Build;
 import android.view.View;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.ui.AppBarConfiguration;
 
 import android.os.Bundle;
+import android.view.ViewAnimationUtils;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +20,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
     FlashcardDatabase flashcardDatabase;
     List<Flashcard> allFlashcards;
     int currentCardDisplayedIndex = 0;
@@ -22,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isShowingAnswers = true;
     boolean flashAnswer = false;
 
-    @SuppressWarnings("all")
+    //@SuppressWarnings("all")
     @Deprecated
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -52,11 +58,28 @@ public class MainActivity extends AppCompatActivity {
 
         //shows the answer to the flashcard question
         flashcardQuestion.setOnClickListener(v -> {
+            //showing answer animation
+            View answerSideView = findViewById(R.id.flashcard_answer);
+
+            // get the center for the clipping circle
+            int cx = answerSideView.getWidth() / 2;
+            int cy = answerSideView.getHeight() / 2;
+
+            // get the final radius for the clipping circle
+            float finalRadius = (float) Math.hypot(cx, cy);
+
+            // create the animator for this view (the start radius is zero)
+            Animator anim = ViewAnimationUtils.createCircularReveal(answerSideView, cx, cy, 0f, finalRadius);
+
+            // hide the question and show the answer to prepare for playing the animation!
             flashcardQuestion.setVisibility(View.INVISIBLE);
             flashcardAnswer.setVisibility(View.VISIBLE);
+
+            anim.setDuration(1000);
+            anim.start();
         });
-        
-          //toggles back to the flashcard question
+
+        //toggles back to the flashcard question
         flashcardAnswer.setOnClickListener(v -> {
             flashcardQuestion.setVisibility(View.VISIBLE);
             flashcardAnswer.setVisibility(View.INVISIBLE);
@@ -139,25 +162,55 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, AddCardActivity.class);
                 //0 is an arbitrary number and is used to keep track of which activity result we expect
                 MainActivity.this.startActivityForResult(intent, 0);
+
+                //sliding animation: right and left
+                overridePendingTransition(R.anim.sliding_animation, R.anim.sliding_animation_left);
             }
         });
 
+        //listener for "next-flashcard" button
         findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(allFlashcards==null||allFlashcards.size()==0){
+                if (allFlashcards == null || allFlashcards.size() == 0) {
                     return;
                 }
+
+                final Animation leftOutAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.sliding_animation_left);
+                final Animation rightInAnim = AnimationUtils.loadAnimation(v.getContext(), R.anim.sliding_animation);
+
                 // advance our pointer index so we can show the next card
                 currentCardDisplayedIndex++;
                 // make sure we don't get an IndexOutOfBoundsError if we are viewing the last indexed card in our list
-                if(currentCardDisplayedIndex>=allFlashcards.size()){
-                    Snackbar.make(flashcardQuestion, "You've reached the end of the cards, going back to start.",Snackbar.LENGTH_SHORT).show();
-                    currentCardDisplayedIndex=0;
+                if (currentCardDisplayedIndex >= allFlashcards.size()) {
+                    Snackbar.make(flashcardQuestion, "You've reached the end of the cards, going back to start.", Snackbar.LENGTH_SHORT).show();
+                    currentCardDisplayedIndex = 0;
                 }
                 // set the question and answer TextViews with data from the database
                 flashcardQuestion.setText(allFlashcards.get(currentCardDisplayedIndex).getQuestion());
                 flashcardAnswer.setText(allFlashcards.get(currentCardDisplayedIndex).getAnswer());
+
+                //we can execute an animation on a view
+                findViewById(R.id.flashcard_question).startAnimation(leftOutAnim);
+
+                //sliding left animation listener
+                leftOutAnim.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // this method is called when the animation first starts
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // this method is called when the animation is finished playing
+                        findViewById(R.id.flashcard_question).startAnimation(rightInAnim);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // we don't need to worry about this method
+                    }
+                });
             }
         });
     }
@@ -174,8 +227,8 @@ public class MainActivity extends AppCompatActivity {
 
             TextView flashcardQuestion = findViewById(R.id.flashcard_question);
             TextView flashcardAnswer = findViewById(R.id.flashcard_answer);
-                flashcardQuestion.setText(customQ);
-                flashcardAnswer.setText(customA);
+            flashcardQuestion.setText(customQ);
+            flashcardAnswer.setText(customA);
 
             flashcardDatabase.insertCard(new Flashcard(customQ, customA));
             allFlashcards = flashcardDatabase.getAllCards();
